@@ -2,6 +2,11 @@
 
 bool Player::m_isFirstPlayer = true;
 
+IPlayerPtr IPlayer::Produce(const std::string& playerName)
+{
+	return std::make_shared<Player>(playerName);
+}
+
 Player::Player() : m_playerSymbol(Symbol::None)
 {
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Symbol.h"
 
-enum class BoardState
+enum class BoardState : uint8_t
 {
 	Ongoing,
 	XWon,

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-enum class Symbol
+enum class Symbol : uint8_t
 {
 	None,
 	X,

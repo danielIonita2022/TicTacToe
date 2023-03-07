@@ -1,5 +1,10 @@
 #include "Board.h"
 
+IBoardPtr IBoard::Produce()
+{
+	return std::make_shared<Board>();
+}
+
 Board::Board() : m_boardState(BoardState::Ongoing)
 {
 	std::fill_n(m_board.begin(), m_board.size(), Symbol::None);
@@ -15,7 +20,7 @@ void Board::setBoard(const std::array<Symbol, 9>& board)
 	m_board = board;
 }
 
-bool Board::isValidPosition(const int position)
+bool Board::isValidPosition(const int position) const
 {
 	if (position < 0 || position > 8)
 		return false;
@@ -39,7 +44,7 @@ void Board::setBoardState()
 	m_boardState = checkBoardState();
 }
 
-BoardState Board::checkBoardState()
+BoardState Board::checkBoardState() const
 {
 	Symbol row = checkRows();
 	if (row != Symbol::None)
@@ -65,7 +70,7 @@ BoardState Board::checkBoardState()
 	return BoardState::Draw;
 }
 
-Symbol Board::checkRows()
+Symbol Board::checkRows() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -78,7 +83,7 @@ Symbol Board::checkRows()
 	return Symbol::None;
 }
 
-Symbol Board::checkColumns()
+Symbol Board::checkColumns() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -91,7 +96,7 @@ Symbol Board::checkColumns()
 	return Symbol::None;
 }
 
-Symbol Board::checkDiagonals()
+Symbol Board::checkDiagonals() const
 {
 	if (m_board[0] != Symbol::None)
 	{
