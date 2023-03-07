@@ -1,22 +1,29 @@
 #pragma once
-#include <iostream>
-#include "Player.h"
+#include "IGame.h"
 #include "Board.h"
+#include "Player.h"
 
-class ConsoleGame
+class ConsoleGame : public IGame
 {
 public:
-	ConsoleGame();
-	Player enterPlayer(const bool firstPlayer);
-	void beginGame();
-	void endGame();
-	void printBoard();
-	void printPlayerTurn(const Player& player);
-	void printWinner(const Player& player);
+
+	ConsoleGame() = default;
+	void startScreen() override;
 	~ConsoleGame();
+
 private:
-	Player m_firstPlayer;
-	Player m_secondPlayer;
-	Board m_gameBoard;
+
+	void beginGame() override;
+	void endGame() override;
+	void printBoard() override;
+	void printPlayerTurn(const IPlayerPtr& player) override;
+	void printWinner(const IPlayerPtr& player) override;
+	IPlayerPtr enterPlayer(const bool firstPlayer) override;
+
+private:
+
+	IPlayerPtr m_firstPlayer;
+	IPlayerPtr m_secondPlayer;
+	IBoardPtr m_gameBoard;
 };
 

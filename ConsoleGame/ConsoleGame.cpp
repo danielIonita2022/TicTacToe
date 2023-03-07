@@ -1,6 +1,13 @@
 #include "ConsoleGame.h"
 
-ConsoleGame::ConsoleGame()
+IGamePtr IGame::Produce(EGameType type)
+{
+	if(type == EGameType::Impl1)
+		return std::make_shared<ConsoleGame>();
+	return {};
+}
+
+void ConsoleGame::startScreen()
 {
 	std::cout << "Welcome to Tic Tac Toe!\n";
 	m_firstPlayer = enterPlayer(true);
@@ -8,7 +15,7 @@ ConsoleGame::ConsoleGame()
 	beginGame();
 }
 
-Player ConsoleGame::enterPlayer(const bool firstPlayer)
+IPlayerPtr ConsoleGame::enterPlayer(const bool firstPlayer)
 {
 	std::cout << "Enter your name ";
 	if (firstPlayer)
@@ -22,24 +29,26 @@ Player ConsoleGame::enterPlayer(const bool firstPlayer)
 	std::string name;
 	std::cin >> name;
 
-	Player player(name);
+	IPlayerPtr player = IPlayer::Produce(name);
 	return player;
 }
 
 void ConsoleGame::beginGame()
 {
+	m_gameBoard = IBoard::Produce();
+
 	printBoard();
 
-	while (m_gameBoard.getBoardState() == BoardState::Ongoing)
+	while (m_gameBoard->getBoardState() == BoardState::Ongoing)
 	{
 		printPlayerTurn(m_firstPlayer);
 		printBoard();
-		m_gameBoard.setBoardState();
-		if (m_gameBoard.getBoardState() == BoardState::Ongoing)
+		m_gameBoard->setBoardState();
+		if (m_gameBoard->getBoardState() == BoardState::Ongoing)
 		{
 			printPlayerTurn(m_secondPlayer);
 			printBoard();
-			m_gameBoard.setBoardState();
+			m_gameBoard->setBoardState();
 		}
 	}
 
@@ -48,7 +57,7 @@ void ConsoleGame::beginGame()
 
 void ConsoleGame::endGame()
 {
-	BoardState boardState = m_gameBoard.getBoardState();
+	BoardState boardState = m_gameBoard->getBoardState();
 	if (boardState == BoardState::XWon)
 	{
 		printWinner(m_firstPlayer);
@@ -63,29 +72,29 @@ void ConsoleGame::endGame()
 	}
 }
 
-void ConsoleGame::printPlayerTurn(const Player& player)
+void ConsoleGame::printPlayerTurn(const IPlayerPtr& player)
 {
-	std::cout << "It's your turn, " << player.getName() << "! Choose an empty space\n";
+	std::cout << "It's your turn, " << player->getName() << "! Choose an empty space\n";
 	int position;
 	std::cin >> position;
-	while (!m_gameBoard.isValidPosition(position))
+	while (!m_gameBoard->isValidPosition(position))
 	{
 		std::cout << "Invalid position! Try again\n";
 		std::cin >> position;
 	}
-	m_gameBoard.placeSymbol(position, player.getSymbol());
+	m_gameBoard->placeSymbol(position, player->getSymbol());
 	std::cout << "\n";
 }
 
-void ConsoleGame::printWinner(const Player& player)
+void ConsoleGame::printWinner(const IPlayerPtr& player)
 {
-	std::cout << "Congratulations, " << player.getName() << "! You won!\n";
+	std::cout << "Congratulations, " << player->getName() << "! You won!\n";
 }
 
 void ConsoleGame::printBoard()
 {
 	int newlineCount = 0;
-	for (const auto& square : m_gameBoard.getBoard())
+	for (const auto& square : m_gameBoard->getBoard())
 	{
 		std::cout << " |";
 		++newlineCount;

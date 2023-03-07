@@ -1,11 +1,11 @@
-#include "Player.h"
-#include "Board.h"
-#include "ConsoleGame.h"
+#include "IPlayer.h"
+#include "IBoard.h"
+#include "IGame.h"
 #include <iostream>
 
 int main()
 {
-	ConsoleGame game;
-
+	auto game = IGame::Produce(EGameType::Impl1);
+	game->startScreen();
 	return 0;
 }
