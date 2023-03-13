@@ -9,5 +9,5 @@ enum class BoardState : uint8_t
 	Draw
 };
 
-BoardState symbolToState(Symbol& symbol);
+BoardState SymbolToState(Symbol& symbol);
 

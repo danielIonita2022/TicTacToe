@@ -8,4 +8,4 @@ enum class Symbol : uint8_t
 	O
 };
 
-std::string symbolToStr(const Symbol& symbol);
+std::string SymbolToStr(const Symbol& symbol);

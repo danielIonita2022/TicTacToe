@@ -10,17 +10,17 @@ Board::Board() : m_boardState(BoardState::Ongoing)
 	std::fill_n(m_board.begin(), m_board.size(), Symbol::None);
 }
 
-std::array <Symbol, 9> Board::getBoard() const
+std::array <Symbol, 9> Board::GetMatrixBoard() const
 {
 	return m_board;
 }
 
-void Board::setBoard(const std::array<Symbol, 9>& board)
+void Board::SetMatrixBoard(const std::array<Symbol, 9>& board)
 {
 	m_board = board;
 }
 
-bool Board::isValidPosition(const int position) const
+bool Board::IsValidPosition(const int position) const
 {
 	if (position < 0 || position > 8)
 		return false;
@@ -29,37 +29,37 @@ bool Board::isValidPosition(const int position) const
 	return true;
 }
 
-void Board::placeSymbol(const int position, const Symbol& symbol)
+void Board::PlaceSymbol(const int position, const Symbol& symbol)
 {
 	m_board[position] = symbol;
 }
 
-BoardState Board::getBoardState() const
+BoardState Board::GetBoardState() const
 {
 	return m_boardState;
 }
 
-void Board::setBoardState()
+void Board::SetBoardState()
 {
-	m_boardState = checkBoardState();
+	m_boardState = CheckBoardState();
 }
 
-BoardState Board::checkBoardState() const
+BoardState Board::CheckBoardState() const
 {
-	Symbol row = checkRows();
+	Symbol row = CheckRows();
 	if (row != Symbol::None)
 	{
-		return symbolToState(row);
+		return SymbolToState(row);
 	}
-	Symbol column = checkColumns();
+	Symbol column = CheckColumns();
 	if (column != Symbol::None)
 	{
-		return symbolToState(column);
+		return SymbolToState(column);
 	}
-	Symbol diagonal = checkDiagonals();
+	Symbol diagonal = CheckDiagonals();
 	if (diagonal != Symbol::None)
 	{
-		return symbolToState(diagonal);
+		return SymbolToState(diagonal);
 	}
 
 	for (int i = 0; i < 9; ++i)
@@ -70,7 +70,7 @@ BoardState Board::checkBoardState() const
 	return BoardState::Draw;
 }
 
-Symbol Board::checkRows() const
+Symbol Board::CheckRows() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -83,7 +83,7 @@ Symbol Board::checkRows() const
 	return Symbol::None;
 }
 
-Symbol Board::checkColumns() const
+Symbol Board::CheckColumns() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -96,7 +96,7 @@ Symbol Board::checkColumns() const
 	return Symbol::None;
 }
 
-Symbol Board::checkDiagonals() const
+Symbol Board::CheckDiagonals() const
 {
 	if (m_board[0] != Symbol::None)
 	{

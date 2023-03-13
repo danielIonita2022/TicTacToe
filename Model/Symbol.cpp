@@ -1,6 +1,6 @@
 #include "Symbol.h"
 
-std::string symbolToStr(const Symbol& symbol)
+std::string SymbolToStr(const Symbol& symbol)
 {
 	switch (symbol)
 	{

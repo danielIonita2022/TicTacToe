@@ -38,17 +38,17 @@ Player& Player::operator=(const Player& player)
 	return *this;
 }
 
-std::string Player::getName() const
+std::string Player::GetName() const
 {
 	return m_playerName;
 }
 
-Symbol Player::getSymbol() const
+Symbol Player::GetSymbol() const
 {
 	return m_playerSymbol;
 }
 
-void Player::setName(const std::string& name)
+void Player::SetName(const std::string& name)
 {
 	m_playerName = name;
 }

@@ -9,9 +9,9 @@ public:
 	Player(const std::string& playerName);
 	Player(const Player& player);
 	Player& operator=(const Player& player);
-	std::string getName() const override;
-	Symbol getSymbol() const override;
-	void setName(const std::string& name) override;
+	std::string GetName() const override;
+	Symbol GetSymbol() const override;
+	void SetName(const std::string& name) override;
 	~Player();
 
 private:

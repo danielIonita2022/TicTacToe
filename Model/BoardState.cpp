@@ -1,6 +1,6 @@
 #include "BoardState.h"
 
-BoardState symbolToState(Symbol& symbol)
+BoardState SymbolToState(Symbol& symbol)
 {
 	if (symbol == Symbol::X)
 		return BoardState::XWon;
