@@ -9,15 +9,18 @@ public:
 	Player(const std::string& playerName);
 	Player(const Player& player);
 	Player& operator=(const Player& player);
+
 	std::string GetName() const override;
-	Symbol GetSymbol() const override;
 	void SetName(const std::string& name) override;
+
+	ESymbol GetSymbol() const override;
+
 	~Player();
 
 private:
 
 	static bool m_isFirstPlayer;
 	std::string m_playerName;
-	Symbol m_playerSymbol;
+	ESymbol m_playerSymbol;
 };
 

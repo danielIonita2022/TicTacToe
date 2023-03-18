@@ -7,7 +7,7 @@ IPlayerPtr IPlayer::Produce(const std::string& playerName)
 	return std::make_shared<Player>(playerName);
 }
 
-Player::Player() : m_playerSymbol(Symbol::None)
+Player::Player() : m_playerSymbol(ESymbol::None)
 {
 }
 
@@ -15,12 +15,12 @@ Player::Player(const std::string& playerName) : m_playerName(playerName)
 {
 	if (m_isFirstPlayer)
 	{
-		m_playerSymbol = Symbol::X;
+		m_playerSymbol = ESymbol::X;
 		m_isFirstPlayer = false;
 	}
 	else
 	{
-		m_playerSymbol = Symbol::O;
+		m_playerSymbol = ESymbol::O;
 		m_isFirstPlayer = true;
 	}
 }
@@ -43,7 +43,7 @@ std::string Player::GetName() const
 	return m_playerName;
 }
 
-Symbol Player::GetSymbol() const
+ESymbol Player::GetSymbol() const
 {
 	return m_playerSymbol;
 }

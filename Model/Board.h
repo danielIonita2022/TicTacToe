@@ -8,24 +8,27 @@ class Board : public IBoard
 public:
 
 	Board();
-	std::array <Symbol, 9> GetMatrixBoard() const override;
-	void SetMatrixBoard(const std::array <Symbol, 9>& board) override;
+
+	std::array <ESymbol, 9> GetMatrixBoard() const override;
+	void SetMatrixBoard(const std::array <ESymbol, 9>& board) override;
+
 	bool IsValidPosition(const int position) const override;
-	void PlaceSymbol(const int position, const Symbol& symbol) override;
-	BoardState GetBoardState() const override;
-	void SetBoardState() override;
+	void PlaceSymbol(const int position, const ESymbol& symbol) override;
+
+	EBoardState GetBoardState() const override;
+	void UpdateBoardState() override;
 
 private:
 
-	BoardState CheckBoardState() const override;
-	Symbol CheckRows() const override;
-	Symbol CheckColumns() const override;
-	Symbol CheckDiagonals() const override;
+	EBoardState ReturnBoardState() const override;
+	ESymbol CheckRows() const override;
+	ESymbol CheckColumns() const override;
+	ESymbol CheckDiagonals() const override;
 
 private:
 
-	std::array <Symbol, 9> m_board;
-	BoardState m_boardState;
+	std::array <ESymbol, 9> m_board;
+	EBoardState m_boardState;
 
 };
 

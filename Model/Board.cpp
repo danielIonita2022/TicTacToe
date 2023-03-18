@@ -5,17 +5,17 @@ IBoardPtr IBoard::Produce()
 	return std::make_shared<Board>();
 }
 
-Board::Board() : m_boardState(BoardState::Ongoing)
+Board::Board() : m_boardState(EBoardState::Ongoing)
 {
-	std::fill_n(m_board.begin(), m_board.size(), Symbol::None);
+	std::fill_n(m_board.begin(), m_board.size(), ESymbol::None);
 }
 
-std::array <Symbol, 9> Board::GetMatrixBoard() const
+std::array <ESymbol, 9> Board::GetMatrixBoard() const
 {
 	return m_board;
 }
 
-void Board::SetMatrixBoard(const std::array<Symbol, 9>& board)
+void Board::SetMatrixBoard(const std::array<ESymbol, 9>& board)
 {
 	m_board = board;
 }
@@ -24,89 +24,89 @@ bool Board::IsValidPosition(const int position) const
 {
 	if (position < 0 || position > 8)
 		return false;
-	if (m_board[position] != Symbol::None)
+	if (m_board[position] != ESymbol::None)
 		return false;
 	return true;
 }
 
-void Board::PlaceSymbol(const int position, const Symbol& symbol)
+void Board::PlaceSymbol(const int position, const ESymbol& symbol)
 {
 	m_board[position] = symbol;
 }
 
-BoardState Board::GetBoardState() const
+EBoardState Board::GetBoardState() const
 {
 	return m_boardState;
 }
 
-void Board::SetBoardState()
+void Board::UpdateBoardState()
 {
-	m_boardState = CheckBoardState();
+	m_boardState = ReturnBoardState();
 }
 
-BoardState Board::CheckBoardState() const
+EBoardState Board::ReturnBoardState() const
 {
-	Symbol row = CheckRows();
-	if (row != Symbol::None)
+	ESymbol row = CheckRows();
+	if (row != ESymbol::None)
 	{
 		return SymbolToState(row);
 	}
-	Symbol column = CheckColumns();
-	if (column != Symbol::None)
+	ESymbol column = CheckColumns();
+	if (column != ESymbol::None)
 	{
 		return SymbolToState(column);
 	}
-	Symbol diagonal = CheckDiagonals();
-	if (diagonal != Symbol::None)
+	ESymbol diagonal = CheckDiagonals();
+	if (diagonal != ESymbol::None)
 	{
 		return SymbolToState(diagonal);
 	}
 
 	for (int i = 0; i < 9; ++i)
 	{
-		if (m_board[i] == Symbol::None)
-			return BoardState::Ongoing;
+		if (m_board[i] == ESymbol::None)
+			return EBoardState::Ongoing;
 	}
-	return BoardState::Draw;
+	return EBoardState::Draw;
 }
 
-Symbol Board::CheckRows() const
+ESymbol Board::CheckRows() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		if (m_board[i * 3] != Symbol::None)
+		if (m_board[i * 3] != ESymbol::None)
 		{
 			if ((m_board[i * 3] == m_board[i * 3 + 1]) && (m_board[i * 3 + 1] == m_board[i * 3 + 2]))
 				return m_board[i * 3];
 		}
 	}
-	return Symbol::None;
+	return ESymbol::None;
 }
 
-Symbol Board::CheckColumns() const
+ESymbol Board::CheckColumns() const
 {
 	for (int i = 0; i < 3; ++i)
 	{
-		if (m_board[i] != Symbol::None)
+		if (m_board[i] != ESymbol::None)
 		{
 			if ((m_board[i] == m_board[i + 3]) && (m_board[i + 3] == m_board[i + 6]))
 				return m_board[i];
 		}
 	}
-	return Symbol::None;
+	return ESymbol::None;
 }
 
-Symbol Board::CheckDiagonals() const
+ESymbol Board::CheckDiagonals() const
 {
-	if (m_board[0] != Symbol::None)
+	if (m_board[0] != ESymbol::None)
 	{
 		if ((m_board[0] == m_board[4]) && (m_board[4] == m_board[8]))
 			return m_board[0];
 	}
-	if (m_board[2] != Symbol::None)
+	if (m_board[2] != ESymbol::None)
 	{
 		if ((m_board[2] == m_board[4]) && (m_board[4] == m_board[6]))
 			return m_board[2];
 	}
-	return Symbol::None;
+	return ESymbol::None;
 }
