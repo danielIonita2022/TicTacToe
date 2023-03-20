@@ -31,31 +31,23 @@ IPlayerPtr Game::DecideWinner()
 void Game::StartGame()
 {
 	IPlayerPtr winner = DecideWinner();
-	for (const auto& listener : m_listeners)
-	{
-		if(auto listenerPtr = listener.lock())
-		{
-			listenerPtr->OnGameOver(winner, m_isDraw);
-		}
-	}
+	auto listener = m_listenersRaw[0];
+	listener->OnGameOver(winner, m_isDraw);
 }
 
-void Game::AddListener(const IGameListenerPtr listener)
+void Game::AddListenerRawPointer(IGameListener* listener)
 {
-	m_listeners.push_back(listener);
+	m_listenersRaw.push_back(listener);
 }
 
-void Game::RemoveListener(const IGameListenerPtr listener)
+void Game::RemoveListenerRawPointer(IGameListener* listener)
 {
-	for (auto it = m_listeners.begin(); it != m_listeners.end(); ++it)
+	for (auto it = m_listenersRaw.begin(); it != m_listenersRaw.end(); ++it)
 	{
-		if (auto listenerPtr = it->lock())
+		if (*it == listener)
 		{
-			if (listenerPtr == listener)
-			{
-				m_listeners.erase(it);
-				break;
-			}
+			m_listenersRaw.erase(it);
+			break;
 		}
 	}
 }
@@ -67,27 +59,19 @@ IBoardPtr Game::GetBoard() const
 
 void Game::MakeMove(const IPlayerPtr player)
 {
-	auto& listener = m_listeners[0];
+	auto listener = m_listenersRaw[0];
 	int position = -1;
 
-	if (auto listenerPtr = listener.lock())
-	{
-		position = listenerPtr->OnPlayerTurn(player);
-	}
+	position = listener->OnPlayerTurn(player);
 
 	while (!m_board->IsValidPosition(position))
 	{
-		if (auto listenerPtr = listener.lock())
-		{
-			position = listenerPtr->OnInvalidMove();
-		}
+		position = listener->OnInvalidMove();
 	}
 
 	m_board->PlaceSymbol(position, player->GetSymbol());
-	if (auto listenerPtr = listener.lock())
-	{
-		listenerPtr->OnMakeMove();
-	}
+	
+	listener->OnMakeMove();
 
 	m_board->UpdateBoardState();
 	if (m_board->GetBoardState() != EBoardState::Ongoing)
@@ -100,7 +84,7 @@ void Game::MakeMove(const IPlayerPtr player)
 	}
 }
 
-void Game::SetPlayerName(int playerNo, const std::string& name)
+void Game::CreatePlayer(int playerNo, const std::string& name)
 {
 	if (playerNo == 1)
 	{

@@ -13,12 +13,12 @@ public:
 
 	virtual IPlayerPtr DecideWinner() = 0;
 
-	virtual void SetPlayerName(int playerNo, const std::string& name) = 0;
+	virtual void CreatePlayer(int playerNo, const std::string& name) = 0;
 
 	virtual void MakeMove(const IPlayerPtr player) = 0;
 
-	virtual void AddListener(const IGameListenerPtr listener) = 0;
-	virtual void RemoveListener(const IGameListenerPtr listener) = 0;
+	virtual void AddListenerRawPointer(IGameListener* listener) = 0;
+	virtual void RemoveListenerRawPointer(IGameListener* listener) = 0;
 
 	virtual IBoardPtr GetBoard() const = 0;
 	virtual ~IGame() = default;
