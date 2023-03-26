@@ -7,11 +7,11 @@ class ConsoleView : public IGameListener
 public:
 
 	ConsoleView(IGamePtr game);
-
-	int OnPlayerTurn(IPlayerPtr player) override;
-	int OnInvalidMove() override;
+	void StartGame();
+	int ChoosePosition(Player player);
+	void PlayerTurn(const Player& player);
 	void OnMakeMove() override;
-	void OnGameOver(IPlayerPtr player, bool isDraw) override;
+	void OnGameOver(Player& player) override;
 
 private:
 

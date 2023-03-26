@@ -14,6 +14,7 @@ public:
 	void SetName(const std::string& name) override;
 
 	ESymbol GetSymbol() const override;
+	void SetSymbol(ESymbol symbol) override;
 
 	~Player();
 

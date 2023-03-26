@@ -2,11 +2,6 @@
 
 bool Player::m_isFirstPlayer = true;
 
-IPlayerPtr IPlayer::Produce(const std::string& playerName)
-{
-	return std::make_shared<Player>(playerName);
-}
-
 Player::Player() : m_playerSymbol(ESymbol::None)
 {
 }
@@ -46,6 +41,13 @@ std::string Player::GetName() const
 ESymbol Player::GetSymbol() const
 {
 	return m_playerSymbol;
+}
+
+void Player::SetSymbol(ESymbol symbol)
+{
+	if (symbol == ESymbol::None)
+		throw std::exception("Invalid symbol!");
+	m_playerSymbol = symbol;
 }
 
 void Player::SetName(const std::string& name)

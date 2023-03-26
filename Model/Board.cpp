@@ -1,11 +1,6 @@
 #include "Board.h"
 
-IBoardPtr IBoard::Produce()
-{
-	return std::make_shared<Board>();
-}
-
-Board::Board() : m_boardState(EBoardState::Ongoing)
+Board::Board()
 {
 	std::fill_n(m_board.begin(), m_board.size(), ESymbol::None);
 }
@@ -32,42 +27,6 @@ bool Board::IsValidPosition(const int position) const
 void Board::PlaceSymbol(const int position, const ESymbol& symbol)
 {
 	m_board[position] = symbol;
-}
-
-EBoardState Board::GetBoardState() const
-{
-	return m_boardState;
-}
-
-void Board::UpdateBoardState()
-{
-	m_boardState = ReturnBoardState();
-}
-
-EBoardState Board::ReturnBoardState() const
-{
-	ESymbol row = CheckRows();
-	if (row != ESymbol::None)
-	{
-		return SymbolToState(row);
-	}
-	ESymbol column = CheckColumns();
-	if (column != ESymbol::None)
-	{
-		return SymbolToState(column);
-	}
-	ESymbol diagonal = CheckDiagonals();
-	if (diagonal != ESymbol::None)
-	{
-		return SymbolToState(diagonal);
-	}
-
-	for (int i = 0; i < 9; ++i)
-	{
-		if (m_board[i] == ESymbol::None)
-			return EBoardState::Ongoing;
-	}
-	return EBoardState::Draw;
 }
 
 ESymbol Board::CheckRows() const

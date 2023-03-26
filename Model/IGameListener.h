@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IPlayer.h"
-#include "IBoard.h"
+#include "Player.h"
+#include "Board.h"
 
 #include <memory>
 
@@ -13,11 +13,15 @@ using IGamePtr = std::shared_ptr<class IGame>;
 class IGameListener
 {
 public:
-
-	virtual int OnPlayerTurn(IPlayerPtr player) = 0;
-	virtual int OnInvalidMove() = 0;
+	/// <summary>
+	/// Method that signals that the board has changed and updates the board with the new element.
+	/// </summary>
 	virtual void OnMakeMove() = 0;
-	virtual void OnGameOver(IPlayerPtr player, bool isDraw) = 0;
+	/// <summary>
+	/// Method that signals that the game is over.
+	/// </summary>
+	/// <param name="player">The player that wins the game.</param>
+	virtual void OnGameOver(Player& player) = 0;
 
 	virtual ~IGameListener() = default;
 };

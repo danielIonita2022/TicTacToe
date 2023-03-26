@@ -3,10 +3,11 @@
 int main()
 {
 	IGamePtr game = IGame::Produce();
-	IGameListenerPtr consoleViewPtr = std::make_shared<ConsoleView>(game);
+	IGameListener* consoleViewPtr = new ConsoleView(game);
 	game->AddListener(consoleViewPtr);
-	game->StartGame();
+	ConsoleView* consoleView = dynamic_cast<ConsoleView*>(consoleViewPtr);
+	consoleView->StartGame();
 	game->RemoveListener(consoleViewPtr);
-
+	delete consoleViewPtr;
 	return 0;
 }

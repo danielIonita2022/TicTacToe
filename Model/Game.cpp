@@ -8,90 +8,109 @@ IGamePtr IGame::Produce()
 
 Game::Game()
 {
-	m_board = IBoard::Produce();
-	m_isOver = false;
-	m_isDraw = false;
+	m_gameState = EGameState::Ongoing;
 }
 
-IPlayerPtr Game::DecideWinner()
+void Game::AddListener(IGameListener* listener)
 {
-	while (!m_isOver)
-	{
-		MakeMove(m_player1);
-		if (!m_isOver)
-		{
-			MakeMove(m_player2);
-		}
-		else return m_player1;
-	}
-	return m_player2;
-	
+	m_listeners.push_back(listener);
 }
 
-void Game::StartGame()
+void Game::RemoveListener(IGameListener* listener)
 {
-	IPlayerPtr winner = DecideWinner();
-	auto listener = m_listenersRaw[0];
-	listener->OnGameOver(winner, m_isDraw);
-}
-
-void Game::AddListenerRawPointer(IGameListener* listener)
-{
-	m_listenersRaw.push_back(listener);
-}
-
-void Game::RemoveListenerRawPointer(IGameListener* listener)
-{
-	for (auto it = m_listenersRaw.begin(); it != m_listenersRaw.end(); ++it)
+	for (auto it = m_listeners.begin(); it != m_listeners.end(); ++it)
 	{
 		if (*it == listener)
 		{
-			m_listenersRaw.erase(it);
+			m_listeners.erase(it);
 			break;
 		}
 	}
 }
 
-IBoardPtr Game::GetBoard() const
+Board Game::GetBoard()
 {
 	return m_board;
 }
 
-void Game::MakeMove(const IPlayerPtr player)
+void Game::UpdateGameState()
 {
-	auto listener = m_listenersRaw[0];
-	int position = -1;
-
-	position = listener->OnPlayerTurn(player);
-
-	while (!m_board->IsValidPosition(position))
+	ESymbol row = m_board.CheckRows();
+	if (row != ESymbol::None)
 	{
-		position = listener->OnInvalidMove();
+		m_gameState = SymbolToState(row);
+		return;
 	}
-
-	m_board->PlaceSymbol(position, player->GetSymbol());
+	ESymbol column = m_board.CheckColumns();
+	if (column != ESymbol::None)
+	{
+		m_gameState = SymbolToState(column);
+		return;
+	}
+	ESymbol diagonal = m_board.CheckDiagonals();
+	if (diagonal != ESymbol::None)
+	{
+		m_gameState = SymbolToState(diagonal);
+		return;
+	}
 	
-	listener->OnMakeMove();
+	for (int i = 0; i < 9; ++i)
+	{
+		if (m_board.GetMatrixBoard()[i] == ESymbol::None)
+		{
+			m_gameState = EGameState::Ongoing;
+			return;
+		}
+	}
+	m_gameState = EGameState::Draw;
 
-	m_board->UpdateBoardState();
-	if (m_board->GetBoardState() != EBoardState::Ongoing)
-	{
-		m_isOver = true;
-	}
-	if (m_board->GetBoardState() == EBoardState::Draw)
-	{
-		m_isDraw = true;
-	}
+}
+
+EGameState Game::GetGameState() const
+{
+	return m_gameState;
 }
 
 void Game::CreatePlayer(int playerNo, const std::string& name)
 {
 	if (playerNo == 1)
 	{
-		m_player1 = IPlayer::Produce(name);
+		m_player1.SetName(name);
+		m_player1.SetSymbol(ESymbol::X);
 	}
 	else if (playerNo == 2)
 	{
-		m_player2 = IPlayer::Produce(name);
+		m_player2.SetName(name);
+		m_player2.SetSymbol(ESymbol::O);
 	}
+}
+Player Game::GetPlayer1() const
+{
+	return m_player1;
+}
+
+Player Game::GetPlayer2() const
+{
+	return m_player2;
+}
+
+bool Game::HasMadeMove(Player& player, int position)
+{
+	auto listener = m_listeners[0];
+
+	if (!m_board.IsValidPosition(position))
+	{
+		return false;
+	}
+
+	m_board.PlaceSymbol(position, player.GetSymbol());
+
+	listener->OnMakeMove();
+
+	UpdateGameState();
+	if (m_gameState != EGameState::Ongoing)
+	{
+		listener->OnGameOver(player);
+	}
+	return true;
 }

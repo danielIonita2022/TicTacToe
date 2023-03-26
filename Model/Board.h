@@ -1,34 +1,32 @@
 #pragma once
-#include "IBoard.h"
+#include <array>
+#include "IPlayer.h"
 
 
-class Board : public IBoard
+class Board
 {
 
 public:
 
 	Board();
 
-	std::array <ESymbol, 9> GetMatrixBoard() const override;
-	void SetMatrixBoard(const std::array <ESymbol, 9>& board) override;
+	std::array <ESymbol, 9> GetMatrixBoard() const;
+	void SetMatrixBoard(const std::array <ESymbol, 9>& board);
 
-	bool IsValidPosition(const int position) const override;
-	void PlaceSymbol(const int position, const ESymbol& symbol) override;
+	bool IsValidPosition(const int position) const;
+	void PlaceSymbol(const int position, const ESymbol& symbol);
 
-	EBoardState GetBoardState() const override;
-	void UpdateBoardState() override;
+	/*EBoardState GetBoardState() const;
+	void UpdateBoardState();*/
 
-private:
-
-	EBoardState ReturnBoardState() const override;
-	ESymbol CheckRows() const override;
-	ESymbol CheckColumns() const override;
-	ESymbol CheckDiagonals() const override;
+	//EBoardState ReturnBoardState() const;
+	ESymbol CheckRows() const;
+	ESymbol CheckColumns() const;
+	ESymbol CheckDiagonals() const;
 
 private:
 
 	std::array <ESymbol, 9> m_board;
-	EBoardState m_boardState;
 
 };
 
