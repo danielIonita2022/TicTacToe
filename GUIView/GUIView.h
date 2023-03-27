@@ -35,16 +35,15 @@ public:
     QEventLoop* loop;
     
 	GUIView(IGamePtr game, std::string player1, std::string player2);
-    int OnPlayerTurn(IPlayerPtr player) override;
-    int OnInvalidMove() override;
-    void OnMakeMove() override;
-    void OnGameOver(IPlayerPtr player, bool isDraw) override;
-    void OnButtonClicked();
+    void StartGame();
+	void PlayerTurn(IPlayerPtr& player);
+	void OnMakeMove() override;
+	void OnGameOver(IPlayerPtr& player) override;
 
     void SetupGame(QMainWindow* MainWindow);
     void RetranslateGame(QMainWindow* MainWindow);
     
-public slots: void commonSlot();
+public slots: void CommonSlot();
     
 signals: void buttonClicked();
     
@@ -55,5 +54,5 @@ private:
 
 namespace Ui {
     class MainWindow: public GUIView {};
-} // namespace Ui
+}
 

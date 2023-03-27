@@ -31,16 +31,10 @@ public:
     QMenuBar* menubar;
     QStatusBar* statusbar;
     
-	GUIStartGame(IGamePtr game);
+	GUIStartGame();
     void SetupStartGame(QMainWindow* MainWindow);
     void RetranslateStartGame(QMainWindow* MainWindow);
-	std::string GetPlayer1Name();
-	std::string GetPlayer2Name();
     void OnStartGamePressed();
     
-private:
-    std::string m_player1;
-	std::string m_player2;
-	IGamePtr m_game;
 };
 

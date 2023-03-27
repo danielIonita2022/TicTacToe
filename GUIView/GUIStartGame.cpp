@@ -1,9 +1,9 @@
 #include "GUIStartGame.h"
 
-GUIStartGame::GUIStartGame(IGamePtr game):
-    m_game(game)
+GUIStartGame::GUIStartGame()
 {
 	SetupStartGame(this);
+    
 }
 
 void GUIStartGame::SetupStartGame(QMainWindow* MainWindow)
@@ -81,31 +81,23 @@ void GUIStartGame::RetranslateStartGame(QMainWindow* MainWindow)
     StartGame->setText(QCoreApplication::translate("MainWindow", "Start Game!", nullptr));
 }
 
-std::string GUIStartGame::GetPlayer1Name()
-{
-	return m_player1;
-}
-
-std::string GUIStartGame::GetPlayer2Name()
-{
-	return m_player2;
-}
-
 void GUIStartGame::OnStartGamePressed()
 {
-	m_player1 = lineEdit->text().toStdString();
-	m_player2 = lineEdit_2->text().toStdString();
-	if (m_player1.empty() || m_player2.empty())
+	std::string playerName1 = lineEdit->text().toStdString();
+    std::string playerName2 = lineEdit_2->text().toStdString();
+	if (playerName1.empty() || playerName2.empty())
 	{
 		QMessageBox::warning(this, "Warning", "Please enter your names!");
 	}
 	else
 	{
 		this->close();
-		GUIView* view = new GUIView(m_game, m_player1, m_player2);
-        view->show();
-        /*IPlayerPtr player = IPlayer::Produce(m_player1);
-        int pos = view->OnPlayerTurn(player);*/
-        m_game->StartGame();
+        IGamePtr game = IGame::Produce();
+        IGameListener* guiViewPtr = new GUIView(game, playerName1, playerName2);
+		game->AddListener(guiViewPtr);
+		GUIView* view = dynamic_cast<GUIView*>(guiViewPtr);
+		view->StartGame();
+		game->RemoveListener(guiViewPtr);
+		delete guiViewPtr;
 	}
 }
