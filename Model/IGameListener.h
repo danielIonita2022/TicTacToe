@@ -21,7 +21,7 @@ public:
 	/// Method that signals that the game is over.
 	/// </summary>
 	/// <param name="player">The player that wins the game.</param>
-	virtual void OnGameOver(Player& player) = 0;
+	virtual void OnGameOver(IPlayerPtr& player) = 0;
 
 	virtual ~IGameListener() = default;
 };

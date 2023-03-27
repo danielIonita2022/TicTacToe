@@ -75,26 +75,24 @@ void Game::CreatePlayer(int playerNo, const std::string& name)
 {
 	if (playerNo == 1)
 	{
-		m_player1.SetName(name);
-		m_player1.SetSymbol(ESymbol::X);
+		m_player1 = std::make_shared<Player>(name);
 	}
 	else if (playerNo == 2)
 	{
-		m_player2.SetName(name);
-		m_player2.SetSymbol(ESymbol::O);
+		m_player2 = std::make_shared<Player>(name);
 	}
 }
-Player Game::GetPlayer1() const
+IPlayerPtr Game::GetPlayer1() const
 {
 	return m_player1;
 }
 
-Player Game::GetPlayer2() const
+IPlayerPtr Game::GetPlayer2() const
 {
 	return m_player2;
 }
 
-bool Game::HasMadeMove(Player& player, int position)
+bool Game::HasMadeMove(IPlayerPtr& player, int position)
 {
 	auto listener = m_listeners[0];
 
@@ -103,7 +101,7 @@ bool Game::HasMadeMove(Player& player, int position)
 		return false;
 	}
 
-	m_board.PlaceSymbol(position, player.GetSymbol());
+	m_board.PlaceSymbol(position, player->GetSymbol());
 
 	listener->OnMakeMove();
 

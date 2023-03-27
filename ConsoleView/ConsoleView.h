@@ -8,10 +8,10 @@ public:
 
 	ConsoleView(IGamePtr game);
 	void StartGame();
-	int ChoosePosition(Player player);
-	void PlayerTurn(const Player& player);
+	int ChoosePosition(IPlayerPtr& player);
+	void PlayerTurn(IPlayerPtr& player);
 	void OnMakeMove() override;
-	void OnGameOver(Player& player) override;
+	void OnGameOver(IPlayerPtr& player) override;
 
 private:
 

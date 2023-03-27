@@ -11,11 +11,11 @@ public:
 
 	Game();
 
-	bool HasMadeMove(Player& player, int position) override;
+	bool HasMadeMove(IPlayerPtr& player, int position) override;
 
 	void CreatePlayer(int playerNo, const std::string& name) override;
-	Player GetPlayer1() const override;
-	Player GetPlayer2() const override;
+	IPlayerPtr GetPlayer1() const override;
+	IPlayerPtr GetPlayer2() const override;
 
 	void AddListener(IGameListener* listener) override;
 	void RemoveListener(IGameListener* listener) override;
@@ -30,7 +30,7 @@ private:
 	std::vector<IGameListener*> m_listeners;
 	Board m_board;
 	EGameState m_gameState;
-	Player m_player1;
-	Player m_player2;
+	IPlayerPtr m_player1;
+	IPlayerPtr m_player2;
 };
 

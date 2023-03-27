@@ -23,19 +23,19 @@ public:
 	/// Method that returns the first player.
 	/// </summary>
 	/// <returns>A Player object.</returns>
-	virtual Player GetPlayer1() const = 0;
+	virtual IPlayerPtr GetPlayer1() const = 0;
 	/// <summary>
 	/// Method that returns the second player.
 	/// </summary>
 	/// <returns>A Player object.</returns>
-	virtual Player GetPlayer2() const = 0;
+	virtual IPlayerPtr GetPlayer2() const = 0;
 	/// <summary>
 	///  Method that confirms that a move has been made and notifies the observers.
 	/// </summary>
 	/// <param name="player">Current player that makes the move</param>
 	/// <param name="position">The position on the board the player chose.</param>
 	/// <returns></returns>
-	virtual bool HasMadeMove(Player& player, int position) = 0;
+	virtual bool HasMadeMove(IPlayerPtr& player, int position) = 0;
 	/// <summary>
 	/// Method that adds a listener.
 	/// </summary>

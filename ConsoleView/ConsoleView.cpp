@@ -15,24 +15,24 @@ ConsoleView::ConsoleView(IGamePtr game) : m_game(game)
 
 void ConsoleView::StartGame()
 {
-	Player player1 = m_game->GetPlayer1();
-	Player player2 = m_game->GetPlayer2();
+	IPlayerPtr player1 = m_game->GetPlayer1();
+	IPlayerPtr player2 = m_game->GetPlayer2();
 	int position = -1;
 
 	while (m_game->GetGameState() == EGameState::Ongoing)
 	{
-		std::cout << "It's your turn, " << player1.GetName() << "!\n";
+		std::cout << "It's your turn, " << player1->GetName() << "!\n";
 		PlayerTurn(player1);
 		
 		if (m_game->GetGameState() == EGameState::Ongoing)
 		{
-			std::cout << "It's your turn, " << player2.GetName() << "!\n";
+			std::cout << "It's your turn, " << player2->GetName() << "!\n";
 			PlayerTurn(player2);
 		}
 	}
 }
 
-void ConsoleView::PlayerTurn(const Player& player)
+void ConsoleView::PlayerTurn(IPlayerPtr& player)
 {
 	int position = -1;
 	position = ChoosePosition(player);
@@ -43,7 +43,7 @@ void ConsoleView::PlayerTurn(const Player& player)
 	}
 }
 
-int ConsoleView::ChoosePosition(Player player)
+int ConsoleView::ChoosePosition(IPlayerPtr& player)
 {
 	std::cout << "Enter the position you want to place your symbol\n";
 	int row, col;
@@ -71,7 +71,7 @@ void ConsoleView::OnMakeMove()
 	std::cout << "\n";
 }
 
-void ConsoleView::OnGameOver(Player& player)
+void ConsoleView::OnGameOver(IPlayerPtr& player)
 {
 	if (m_game->GetGameState() == EGameState::Draw)
 	{
@@ -79,7 +79,7 @@ void ConsoleView::OnGameOver(Player& player)
 	}
 	else
 	{
-		std::cout << "Congratulations, " << player.GetName() << "! You won!\n";
+		std::cout << "Congratulations, " << player->GetName() << "! You won!\n";
 	}
 }
 
