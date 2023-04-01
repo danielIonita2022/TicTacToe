@@ -9,7 +9,7 @@ GUIView::GUIView(IGamePtr game, std::string player1, std::string player2) :
 	this->show();
 }
 
-void GUIView::StartGame()
+void GUIView::RunGame()
 {
 	IPlayerPtr player1 = m_game->GetPlayer1();
 	IPlayerPtr player2 = m_game->GetPlayer2();

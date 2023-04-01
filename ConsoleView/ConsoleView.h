@@ -5,16 +5,18 @@
 class ConsoleView : public IGameListener
 {
 public:
-
 	ConsoleView(IGamePtr game);
-	void StartGame();
-	int ChoosePosition(IPlayerPtr& player);
-	void PlayerTurn(IPlayerPtr& player);
-	void OnMakeMove() override;
-	void OnGameOver(IPlayerPtr& player) override;
+
+	void RunGame(); // RunGame()
 
 private:
+	int ChoosePosition(IPlayerPtr player);
 
+	// IGameListener impl
+	void OnMakeMove() override;
+	void OnGameOver(IPlayerPtr player) override;
+
+private:
 	IGamePtr m_game;
 };
 

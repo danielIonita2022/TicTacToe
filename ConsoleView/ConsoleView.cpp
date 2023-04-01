@@ -13,37 +13,23 @@ ConsoleView::ConsoleView(IGamePtr game) : m_game(game)
 	m_game->CreatePlayer(2, name);
 }
 
-void ConsoleView::StartGame()
+void ConsoleView::RunGame()
 {
-	IPlayerPtr player1 = m_game->GetPlayer1();
-	IPlayerPtr player2 = m_game->GetPlayer2();
-	int position = -1;
-
 	while (m_game->GetGameState() == EGameState::Ongoing)
 	{
-		std::cout << "It's your turn, " << player1->GetName() << "!\n";
-		PlayerTurn(player1);
-		
-		if (m_game->GetGameState() == EGameState::Ongoing)
+		auto currentPlayer = m_game->GetCurrentPlayer();
+		std::cout << "It's your turn, " << currentPlayer->GetName() << "!\n";
+
+		int position = ChoosePosition(currentPlayer);
+		while (!m_game->MakeMove(position))
 		{
-			std::cout << "It's your turn, " << player2->GetName() << "!\n";
-			PlayerTurn(player2);
+			std::cout << "Invalid move! Try again.\n";
+			position = ChoosePosition(currentPlayer);
 		}
 	}
 }
 
-void ConsoleView::PlayerTurn(IPlayerPtr& player)
-{
-	int position = -1;
-	position = ChoosePosition(player);
-	while (!m_game->HasMadeMove(player, position))
-	{
-		std::cout << "Invalid move! Try again.\n";
-		position = ChoosePosition(player);
-	}
-}
-
-int ConsoleView::ChoosePosition(IPlayerPtr& player)
+int ConsoleView::ChoosePosition(IPlayerPtr player)
 {
 	std::cout << "Enter the position you want to place your symbol\n";
 	int row, col;
@@ -59,7 +45,7 @@ int ConsoleView::ChoosePosition(IPlayerPtr& player)
 void ConsoleView::OnMakeMove()
 {
 	int newlineCount = 0;
-	auto gameBoard = m_game->GetBoard().GetMatrixBoard();
+	auto gameBoard = m_game->GetBoardArray();
 	for (const auto& square : gameBoard)
 	{
 		std::cout << " |";
@@ -71,9 +57,9 @@ void ConsoleView::OnMakeMove()
 	std::cout << "\n";
 }
 
-void ConsoleView::OnGameOver(IPlayerPtr& player)
+void ConsoleView::OnGameOver(IPlayerPtr player)
 {
-	if (m_game->GetGameState() == EGameState::Draw)
+	if (player == nullptr)
 	{
 		std::cout << "It's a draw!\n";
 	}

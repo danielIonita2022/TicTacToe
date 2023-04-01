@@ -1,14 +1,12 @@
 #include "Game.h"
-#include <iostream>
 
 IGamePtr IGame::Produce()
 {
 	return std::make_shared<Game>();
 }
 
-Game::Game()
+Game::Game() : m_gameState(EGameState::Ongoing)
 {
-	m_gameState = EGameState::Ongoing;
 }
 
 void Game::AddListener(IGameListener* listener)
@@ -28,9 +26,9 @@ void Game::RemoveListener(IGameListener* listener)
 	}
 }
 
-Board Game::GetBoard()
+std::array<ESymbol, 9> Game::GetBoardArray() const
 {
-	return m_board;
+	return m_board.GetMatrixBoard();
 }
 
 void Game::UpdateGameState()
@@ -76,11 +74,16 @@ void Game::CreatePlayer(int playerNo, const std::string& name)
 	if (playerNo == 1)
 	{
 		m_player1 = std::make_shared<Player>(name);
+		m_currentPlayer = m_player1;
 	}
 	else if (playerNo == 2)
 	{
 		m_player2 = std::make_shared<Player>(name);
 	}
+}
+IPlayerPtr Game::GetCurrentPlayer() const
+{
+	return m_currentPlayer;
 }
 IPlayerPtr Game::GetPlayer1() const
 {
@@ -92,23 +95,30 @@ IPlayerPtr Game::GetPlayer2() const
 	return m_player2;
 }
 
-bool Game::HasMadeMove(IPlayerPtr& player, int position)
+bool Game::MakeMove(int position)
 {
-	auto listener = m_listeners[0];
-
 	if (!m_board.IsValidPosition(position))
 	{
 		return false;
 	}
 
-	m_board.PlaceSymbol(position, player->GetSymbol());
+	m_board.PlaceSymbol(position, m_currentPlayer->GetSymbol());
 
-	listener->OnMakeMove();
+	for(const auto& listener : m_listeners)
+		listener->OnMakeMove();
 
 	UpdateGameState();
 	if (m_gameState != EGameState::Ongoing)
 	{
-		listener->OnGameOver(player);
+		if (m_gameState == EGameState::Draw)
+			for (const auto& listener : m_listeners)
+				listener->OnGameOver(nullptr);
+		else
+			for (const auto& listener : m_listeners)
+				listener->OnGameOver(m_currentPlayer);
 	}
+
+	m_currentPlayer = (m_currentPlayer == m_player1) ? m_player2 : m_player1;
+	
 	return true;
 }

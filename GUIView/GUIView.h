@@ -35,7 +35,7 @@ public:
     QEventLoop* loop;
     
 	GUIView(IGamePtr game, std::string player1, std::string player2);
-    void StartGame();
+    void RunGame();
 	void PlayerTurn(IPlayerPtr& player);
 	void OnMakeMove() override;
 	void OnGameOver(IPlayerPtr& player) override;

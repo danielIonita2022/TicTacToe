@@ -1,7 +1,7 @@
 #pragma once
 #include "IGame.h"
-#include "Board.h"
 #include "Player.h"
+#include "Board.h"
 
 #include <vector>
 
@@ -11,19 +11,22 @@ public:
 
 	Game();
 
-	bool HasMadeMove(IPlayerPtr& player, int position) override;
+	bool MakeMove(int position) override;
 
 	void CreatePlayer(int playerNo, const std::string& name) override;
 	IPlayerPtr GetPlayer1() const override;
 	IPlayerPtr GetPlayer2() const override;
+	IPlayerPtr GetCurrentPlayer() const override;
 
 	void AddListener(IGameListener* listener) override;
 	void RemoveListener(IGameListener* listener) override;
 
-	Board GetBoard() override;
+	std::array <ESymbol, 9> GetBoardArray() const override;
 
-	void UpdateGameState() override;
 	EGameState GetGameState() const override;
+
+private:
+	void UpdateGameState();
 
 private:
 
@@ -32,5 +35,6 @@ private:
 	EGameState m_gameState;
 	IPlayerPtr m_player1;
 	IPlayerPtr m_player2;
+	IPlayerPtr m_currentPlayer;
 };
 

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "IGameListener.h"
-#include "Player.h"
-#include "Board.h"
+#include "IPlayer.h"
 #include "EGameState.h"
 
 class IGame
@@ -30,12 +29,17 @@ public:
 	/// <returns>A Player object.</returns>
 	virtual IPlayerPtr GetPlayer2() const = 0;
 	/// <summary>
+	/// Method that returns the current player.
+	/// </summary>
+	/// <returns></returns>
+	virtual IPlayerPtr GetCurrentPlayer() const = 0;
+	/// <summary>
 	///  Method that confirms that a move has been made and notifies the observers.
 	/// </summary>
 	/// <param name="player">Current player that makes the move</param>
 	/// <param name="position">The position on the board the player chose.</param>
 	/// <returns></returns>
-	virtual bool HasMadeMove(IPlayerPtr& player, int position) = 0;
+	virtual bool MakeMove(int position) = 0;
 	/// <summary>
 	/// Method that adds a listener.
 	/// </summary>
@@ -49,16 +53,11 @@ public:
 	/// <summary>
 	/// Method that returns the board.
 	/// </summary>
-	/// <returns>A pointer to the board.</returns>
-	virtual Board GetBoard() = 0;
+	/// <returns>A Board object.</returns>
+	virtual std::array <ESymbol, 9> GetBoardArray() const = 0;
 	/// <summary>
-	/// Updates the game state variable with a new EGameState value.
+	/// Returns current game state.
 	/// </summary>
-	virtual void UpdateGameState() = 0;
-	/// <summary>
-	/// Gets the current game state.
-	/// </summary>
-	/// <returns>Enum class that can be XWon, OWon, Draw, Ongoing.</returns>
 	virtual EGameState GetGameState() const = 0;
 
 	virtual ~IGame() = default;

@@ -51,11 +51,11 @@ void GUIStartGame::SetupStartGame(QMainWindow* MainWindow)
 
     verticalLayout->addWidget(lineEdit_2);
 
-    StartGame = new QPushButton(verticalLayoutWidget);
-    connect(StartGame, &QPushButton::clicked, this, &GUIStartGame::OnStartGamePressed);
-    StartGame->setObjectName("StartGame");
+    RunGame = new QPushButton(verticalLayoutWidget);
+    connect(RunGame, &QPushButton::clicked, this, &GUIStartGame::OnStartGamePressed);
+    RunGame->setObjectName("StartGame");
 
-    verticalLayout->addWidget(StartGame);
+    verticalLayout->addWidget(RunGame);
 
     MainWindow->setCentralWidget(centralwidget);
     menubar = new QMenuBar(MainWindow);
@@ -78,7 +78,7 @@ void GUIStartGame::RetranslateStartGame(QMainWindow* MainWindow)
     label_2->setText(QCoreApplication::translate("MainWindow", "Please enter your names:", nullptr));
     label_3->setText(QCoreApplication::translate("MainWindow", "First player", nullptr));
     label_4->setText(QCoreApplication::translate("MainWindow", "Second player", nullptr));
-    StartGame->setText(QCoreApplication::translate("MainWindow", "Start Game!", nullptr));
+    RunGame->setText(QCoreApplication::translate("MainWindow", "Start Game!", nullptr));
 }
 
 void GUIStartGame::OnStartGamePressed()
@@ -96,7 +96,7 @@ void GUIStartGame::OnStartGamePressed()
         IGameListener* guiViewPtr = new GUIView(game, playerName1, playerName2);
 		game->AddListener(guiViewPtr);
 		GUIView* view = dynamic_cast<GUIView*>(guiViewPtr);
-		view->StartGame();
+		view->RunGame();
 		game->RemoveListener(guiViewPtr);
 		delete guiViewPtr;
 	}

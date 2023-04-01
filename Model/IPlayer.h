@@ -1,8 +1,7 @@
 #pragma once
-#include <memory>
-#include <string>
-
 #include "ESymbol.h"
+
+#include <memory>
 
 using IPlayerPtr = std::shared_ptr<class IPlayer>;
 
@@ -26,7 +25,7 @@ public:
 	/// <returns>ESymbol::X, ESymbol::Y or ESymbol::None.</returns>
 	virtual ESymbol GetSymbol() const = 0;
 	/// <summary>
-	/// method that sets the symbol of the player.
+	/// Method that sets the symbol of the player.
 	/// </summary>
 	/// <param name="symbol">Enum class type that can be X or O</param>
 	virtual void SetSymbol(ESymbol symbol) = 0;

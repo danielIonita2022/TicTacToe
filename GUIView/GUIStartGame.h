@@ -27,7 +27,7 @@ public:
     QLineEdit* lineEdit;
     QLabel* label_4;
     QLineEdit* lineEdit_2;
-    QPushButton* StartGame;
+    QPushButton* RunGame;
     QMenuBar* menubar;
     QStatusBar* statusbar;
     

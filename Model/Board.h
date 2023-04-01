@@ -1,6 +1,8 @@
 #pragma once
-#include <array>
+
 #include "IPlayer.h"
+
+#include <array>
 
 
 class Board
@@ -16,10 +18,6 @@ public:
 	bool IsValidPosition(const int position) const;
 	void PlaceSymbol(const int position, const ESymbol& symbol);
 
-	/*EBoardState GetBoardState() const;
-	void UpdateBoardState();*/
-
-	//EBoardState ReturnBoardState() const;
 	ESymbol CheckRows() const;
 	ESymbol CheckColumns() const;
 	ESymbol CheckDiagonals() const;

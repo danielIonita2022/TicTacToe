@@ -33,6 +33,11 @@ Player& Player::operator=(const Player& player)
 	return *this;
 }
 
+bool Player::operator==(const Player& player) const
+{
+	return m_playerName == player.GetName() && m_playerSymbol == player.GetSymbol();
+}
+
 std::string Player::GetName() const
 {
 	return m_playerName;
