@@ -5,6 +5,11 @@ Board::Board()
 	std::fill_n(m_board.begin(), m_board.size(), ESymbol::None);
 }
 
+Board::Board(const Board& other):
+	m_board(other.m_board)
+{
+}
+
 std::array <ESymbol, 9> Board::GetMatrixBoard() const
 {
 	return m_board;

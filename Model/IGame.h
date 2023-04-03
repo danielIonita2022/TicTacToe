@@ -1,8 +1,10 @@
 #pragma once
 
 #include "IGameListener.h"
-#include "IPlayer.h"
+#include "Player.h"
+#include "Board.h"
 #include "EGameState.h"
+#include "EGameDifficulty.h"
 
 class IGame
 {
@@ -28,10 +30,6 @@ public:
 	/// </summary>
 	/// <returns>A Player object.</returns>
 	virtual IPlayerPtr GetPlayer2() const = 0;
-	/// <summary>
-	/// Method that returns the current player.
-	/// </summary>
-	/// <returns></returns>
 	virtual IPlayerPtr GetCurrentPlayer() const = 0;
 	/// <summary>
 	///  Method that confirms that a move has been made and notifies the observers.
@@ -53,12 +51,22 @@ public:
 	/// <summary>
 	/// Method that returns the board.
 	/// </summary>
-	/// <returns>A Board object.</returns>
-	virtual std::array <ESymbol, 9> GetBoardArray() const = 0;
+	/// <returns>A pointer to the board.</returns>
+	virtual std::array<ESymbol, 9> GetBoardArray() const = 0;
 	/// <summary>
-	/// Returns current game state.
+	/// Gets the current game state.
 	/// </summary>
+	/// <returns>Enum class that can be XWon, OWon, Draw, Ongoing.</returns>
 	virtual EGameState GetGameState() const = 0;
+	/// <summary>
+	/// Sets the strategy for the game.
+	/// </summary>
+	/// <param name="difficulty">Enum class that can be Easy, Medium, Hard.</param>
+	virtual void SetStrategy(EGameDifficulty difficulty) = 0;
+	/// <summary>
+	/// Method that makes a move for the computer.
+	/// </summary>
+	virtual void MakeComputerMove() = 0;
 
 	virtual ~IGame() = default;
 };

@@ -1,8 +1,6 @@
 #pragma once
-
-#include "IPlayer.h"
-
 #include <array>
+#include "IPlayer.h"
 
 
 class Board
@@ -11,6 +9,7 @@ class Board
 public:
 
 	Board();
+	Board(const Board& other);
 
 	std::array <ESymbol, 9> GetMatrixBoard() const;
 	void SetMatrixBoard(const std::array <ESymbol, 9>& board);

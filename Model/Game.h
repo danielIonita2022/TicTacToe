@@ -1,7 +1,11 @@
 #pragma once
 #include "IGame.h"
-#include "Player.h"
 #include "Board.h"
+#include "Player.h"
+#include "IStrategy.h"
+#include "EasyStrategy.h"
+#include "MediumStrategy.h"
+#include "HardStrategy.h"
 
 #include <vector>
 
@@ -21,11 +25,14 @@ public:
 	void AddListener(IGameListener* listener) override;
 	void RemoveListener(IGameListener* listener) override;
 
-	std::array <ESymbol, 9> GetBoardArray() const override;
+	std::array<ESymbol, 9> GetBoardArray() const override;
 
 	EGameState GetGameState() const override;
-
+	void SetStrategy(EGameDifficulty difficulty) override;
+	void MakeComputerMove() override;
+	
 private:
+	
 	void UpdateGameState();
 
 private:
@@ -36,5 +43,6 @@ private:
 	IPlayerPtr m_player1;
 	IPlayerPtr m_player2;
 	IPlayerPtr m_currentPlayer;
+	IStrategyPtr m_strategy;
 };
 

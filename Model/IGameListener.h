@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IPlayer.h"
+#include "Player.h"
 #include "Board.h"
 
 #include <memory>
@@ -16,7 +16,7 @@ public:
 	/// <summary>
 	/// Method that signals that the board has changed and updates the board with the new element.
 	/// </summary>
-	virtual void OnMakeMove(/*int x, int y*/) = 0;
+	virtual void OnMakeMove() = 0;
 	/// <summary>
 	/// Method that signals that the game is over.
 	/// </summary>

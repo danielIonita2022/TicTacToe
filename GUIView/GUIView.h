@@ -35,13 +35,16 @@ public:
     QEventLoop* loop;
     
 	GUIView(IGamePtr game, std::string player1, std::string player2);
+	GUIView(IGamePtr game, std::string player);
     void RunGame();
-	void PlayerTurn(IPlayerPtr& player);
+	void PlayerTurn(IPlayerPtr player);
 	void OnMakeMove() override;
-	void OnGameOver(IPlayerPtr& player) override;
+	void OnGameOver(IPlayerPtr player) override;
 
     void SetupGame(QMainWindow* MainWindow);
     void RetranslateGame(QMainWindow* MainWindow);
+    
+	~GUIView() = default;
     
 public slots: void CommonSlot();
     

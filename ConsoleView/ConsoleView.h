@@ -7,7 +7,7 @@ class ConsoleView : public IGameListener
 public:
 	ConsoleView(IGamePtr game);
 
-	void RunGame(); // RunGame()
+	void RunGame();
 
 private:
 	int ChoosePosition(IPlayerPtr player);
@@ -18,5 +18,6 @@ private:
 
 private:
 	IGamePtr m_game;
+	bool m_isComputerPlaying;
 };
 

@@ -32,7 +32,6 @@ Player& Player::operator=(const Player& player)
 	m_playerSymbol = player.m_playerSymbol;
 	return *this;
 }
-
 bool Player::operator==(const Player& player) const
 {
 	return m_playerName == player.GetName() && m_playerSymbol == player.GetSymbol();

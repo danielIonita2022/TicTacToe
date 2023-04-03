@@ -1,16 +1,56 @@
 #include "ConsoleView.h"
 #include <iostream>
 
-ConsoleView::ConsoleView(IGamePtr game) : m_game(game)
+ConsoleView::ConsoleView(IGamePtr game) : m_game(game), m_isComputerPlaying(false)
 {
 	std::cout << "Welcome to Tic Tac Toe!\n";
-	std::cout << "Enter your name first player: ";
-	std::string name;
-	std::cin >> name;
-	m_game->CreatePlayer(1, name);
-	std::cout << "Enter your name second player: ";
-	std::cin >> name;
-	m_game->CreatePlayer(2, name);
+	std::cout << "Do you want to play with the computer or with a friend?\n";
+	std::cout << "1. Computer\n";
+	std::cout << "2. Friend\n";
+	int choice = 0;
+	std::cin >> choice;
+	if (choice == 1)
+	{
+		std::cout << "What difficulty do you want to play on?\n";
+		std::cout << "1. Easy\n";
+		std::cout << "2. Medium\n";
+		std::cout << "3. Hard\n";
+		int difficulty = 0;
+		std::cin >> difficulty;
+		if (difficulty == 1)
+		{
+			m_game->SetStrategy(EGameDifficulty::Easy);
+		}
+		else if (difficulty == 2)
+		{
+			m_game->SetStrategy(EGameDifficulty::Medium);
+		}
+		else if (difficulty == 3)
+		{
+			m_game->SetStrategy(EGameDifficulty::Hard);
+		}
+		std::cout << "Enter your name: ";
+		std::string name;
+		std::cin >> name;
+		m_game->CreatePlayer(1, name);
+		m_game->CreatePlayer(2, "Computer");
+		m_isComputerPlaying = true;
+	}
+	else if (choice == 2)
+	{
+		std::cout << "Enter your name first player: ";
+		std::string name;
+		std::cin >> name;
+		m_game->CreatePlayer(1, name);
+		std::cout << "Enter your name second player: ";
+		std::cin >> name;
+		m_game->CreatePlayer(2, name);
+		m_isComputerPlaying = false;
+	}
+	else
+	{
+		std::cout << "Wrong choice!\n";
+	}
 }
 
 void ConsoleView::RunGame()
@@ -18,13 +58,20 @@ void ConsoleView::RunGame()
 	while (m_game->GetGameState() == EGameState::Ongoing)
 	{
 		auto currentPlayer = m_game->GetCurrentPlayer();
-		std::cout << "It's your turn, " << currentPlayer->GetName() << "!\n";
-
-		int position = ChoosePosition(currentPlayer);
-		while (!m_game->MakeMove(position))
+		
+		if (currentPlayer->GetName() != "Computer")
 		{
-			std::cout << "Invalid move! Try again.\n";
-			position = ChoosePosition(currentPlayer);
+			std::cout << "It's your turn, " << currentPlayer->GetName() << "!\n";
+			int position = ChoosePosition(currentPlayer);
+			while (!m_game->MakeMove(position))
+			{
+				std::cout << "Invalid move! Try again.\n";
+				position = ChoosePosition(currentPlayer);
+			}
+		}
+		else
+		{
+			m_game->MakeComputerMove();
 		}
 	}
 }

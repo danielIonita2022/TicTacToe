@@ -11,6 +11,8 @@
 #include <QtWidgets/QWidget>
 #include <QMessageBox>
 #include <QSignalMapper>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QCheckBox>
 #include <string>
 #include "GUIView.h"
 #include "IGame.h"
@@ -27,14 +29,18 @@ public:
     QLineEdit* lineEdit;
     QLabel* label_4;
     QLineEdit* lineEdit_2;
-    QPushButton* RunGame;
+    QPushButton* StartGame;
     QMenuBar* menubar;
     QStatusBar* statusbar;
+	QCheckBox* checkBoxDifficulty;
+	QComboBox* comboBox;
     
 	GUIStartGame();
     void SetupStartGame(QMainWindow* MainWindow);
     void RetranslateStartGame(QMainWindow* MainWindow);
+    void OnCheckBoxChecked();
     void OnStartGamePressed();
     
+	~GUIStartGame() = default;
 };
 

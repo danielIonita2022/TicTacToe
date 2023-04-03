@@ -9,107 +9,136 @@ GUIView::GUIView(IGamePtr game, std::string player1, std::string player2) :
 	this->show();
 }
 
+GUIView::GUIView(IGamePtr game, std::string player1):
+	m_game(game)
+{
+	m_game->CreatePlayer(1, player1);
+	m_game->CreatePlayer(2, "Computer");
+	SetupGame(this);
+	this->show();
+}
+
 void GUIView::RunGame()
 {
-	IPlayerPtr player1 = m_game->GetPlayer1();
-	IPlayerPtr player2 = m_game->GetPlayer2();
 	while (m_game->GetGameState() == EGameState::Ongoing)
 	{
-		PlayerTurn(player1);
-		if (m_game->GetGameState() == EGameState::Ongoing)
+		auto currentPlayer = m_game->GetCurrentPlayer();
+		if (currentPlayer->GetSymbol() == ESymbol::X)
 		{
-			PlayerTurn(player2);
+			PlayerTurn(currentPlayer);
+		}
+		else
+		{
+			m_game->MakeComputerMove();
 		}
 	}
 }
-void GUIView::PlayerTurn(IPlayerPtr& player)
+void GUIView::PlayerTurn(IPlayerPtr player)
 {
 	label_5->setText(QString::fromStdString("It's your turn, " + player->GetName()));
 	m_position = -1;
 	loop->exec();
-	m_game->HasMadeMove(player, m_position);
+	m_game->MakeMove(m_position);
 }
 
 void GUIView::OnMakeMove()
 {
-	auto board = m_game->GetBoard().GetMatrixBoard();
+	auto board = m_game->GetBoardArray();
 	if (board[0] == ESymbol::X)
 	{
 		pushButton_00->setText("X");
+		pushButton_00->setEnabled(false);
 	}
 	else if (board[0] == ESymbol::O)
 	{
 		pushButton_00->setText("O");
+		pushButton_00->setEnabled(false);
 	}
 	if (board[1] == ESymbol::X)
 	{
 		pushButton_01->setText("X");
+		pushButton_01->setEnabled(false);
 	}
 	else if (board[1] == ESymbol::O)
 	{
 		pushButton_01->setText("O");
+		pushButton_01->setEnabled(false);
 	}
 	if (board[2] == ESymbol::X)
 	{
 		pushButton_02->setText("X");
+		pushButton_02->setEnabled(false);
 	}
 	else if (board[2] == ESymbol::O)
 	{
 		pushButton_02->setText("O");
+		pushButton_02->setEnabled(false);
 	}
 	if (board[3] == ESymbol::X)
 	{
 		pushButton_10->setText("X");
+		pushButton_10->setEnabled(false);
 	}
 	else if (board[3] == ESymbol::O)
 	{
 		pushButton_10->setText("O");
+		pushButton_10->setEnabled(false);
 	}
 	if (board[4] == ESymbol::X)
 	{
 		pushButton_11->setText("X");
+		pushButton_11->setEnabled(false);
 	}
 	else if (board[4] == ESymbol::O)
 	{
 		pushButton_11->setText("O");
+		pushButton_11->setEnabled(false);
 	}
 	if (board[5] == ESymbol::X)
 	{
 		pushButton_12->setText("X");
+		pushButton_12->setEnabled(false);
 	}
 	else if (board[5] == ESymbol::O)
 	{
 		pushButton_12->setText("O");
+		pushButton_12->setEnabled(false);
 	}
 	if (board[6] == ESymbol::X)
 	{
 		pushButton_20->setText("X");
+		pushButton_20->setEnabled(false);
 	}
 	else if (board[6] == ESymbol::O)
 	{
 		pushButton_20->setText("O");
+		pushButton_20->setEnabled(false);
 	}
 	if (board[7] == ESymbol::X)
 	{
 		pushButton_21->setText("X");
+		pushButton_21->setEnabled(false);
 	}
 	else if (board[7] == ESymbol::O)
 	{
 		pushButton_21->setText("O");
+		pushButton_21->setEnabled(false);
 	}
 	if (board[8] == ESymbol::X)
 	{
 		pushButton_22->setText("X");
+		pushButton_22->setEnabled(false);
 	}
 	else if (board[8] == ESymbol::O)
 	{
 		pushButton_22->setText("O");
+		pushButton_22->setEnabled(false);
 	}
 }
 
-void GUIView::OnGameOver(IPlayerPtr& player)
+void GUIView::OnGameOver(IPlayerPtr player)
 {
-    if (m_game->GetGameState() == EGameState::Draw)
+    if (player == nullptr)
     {
 		QMessageBox::information(this, "Game Over", "Game Over. It's a draw!");
 	}
@@ -135,8 +164,6 @@ void GUIView::CommonSlot()
 	QPushButton* clickedButton = qobject_cast<QPushButton*>(item->widget());
 	if (!clickedButton)
 		return;
-
-	clickedButton->setEnabled(false);
 	
 	m_position = rowOfButton * 3 + columnOfButton;
 	

@@ -19,4 +19,3 @@ enum class EGameState : uint8_t
 /// <param name="symbol">ESymbol enum value</param>
 /// <returns>EGameState enum value</returns>
 EGameState SymbolToState(ESymbol& symbol);
-

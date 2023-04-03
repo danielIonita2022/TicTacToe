@@ -5,12 +5,9 @@
 /// </summary>
 enum class ESymbol : uint8_t
 {
-	/// Blank space
-	None, 
-	/// X Symbol
-	X, 
-	/// O Symbol
-	O 
+	None, /// Blank space
+	X, /// X Symbol
+	O /// O Symbol
 };
 
 /// <summary>

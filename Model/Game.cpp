@@ -1,11 +1,13 @@
 #include "Game.h"
+#include <iostream>
 
 IGamePtr IGame::Produce()
 {
 	return std::make_shared<Game>();
 }
 
-Game::Game() : m_gameState(EGameState::Ongoing)
+Game::Game():
+	m_gameState(EGameState::Ongoing), m_strategy(std::make_shared<EasyStrategy>())
 {
 }
 
@@ -69,6 +71,28 @@ EGameState Game::GetGameState() const
 	return m_gameState;
 }
 
+void Game::SetStrategy(EGameDifficulty difficulty) 
+{
+	if (difficulty == EGameDifficulty::Easy)
+	{
+		m_strategy = std::make_shared<EasyStrategy>();
+	}
+	else if (difficulty == EGameDifficulty::Medium)
+	{
+		m_strategy = std::make_shared<MediumStrategy>();
+	}
+	else if (difficulty == EGameDifficulty::Hard)
+	{
+		m_strategy = std::make_shared<HardStrategy>();
+	}
+}
+
+void Game::MakeComputerMove()
+{
+	int position = m_strategy->MakeMove(m_board);
+	MakeMove(position);
+}
+
 void Game::CreatePlayer(int playerNo, const std::string& name)
 {
 	if (playerNo == 1)
@@ -81,10 +105,6 @@ void Game::CreatePlayer(int playerNo, const std::string& name)
 		m_player2 = std::make_shared<Player>(name);
 	}
 }
-IPlayerPtr Game::GetCurrentPlayer() const
-{
-	return m_currentPlayer;
-}
 IPlayerPtr Game::GetPlayer1() const
 {
 	return m_player1;
@@ -93,6 +113,11 @@ IPlayerPtr Game::GetPlayer1() const
 IPlayerPtr Game::GetPlayer2() const
 {
 	return m_player2;
+}
+
+IPlayerPtr Game::GetCurrentPlayer() const
+{
+	return m_currentPlayer;
 }
 
 bool Game::MakeMove(int position)
@@ -104,7 +129,7 @@ bool Game::MakeMove(int position)
 
 	m_board.PlaceSymbol(position, m_currentPlayer->GetSymbol());
 
-	for(const auto& listener : m_listeners)
+	for (const auto& listener : m_listeners)
 		listener->OnMakeMove();
 
 	UpdateGameState();
@@ -119,6 +144,6 @@ bool Game::MakeMove(int position)
 	}
 
 	m_currentPlayer = (m_currentPlayer == m_player1) ? m_player2 : m_player1;
-	
+
 	return true;
 }
