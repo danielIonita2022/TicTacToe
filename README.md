@@ -6,8 +6,13 @@ This application showcases our proficiency in working with design patterns (Fact
 
 ## Technologies used
 
-Core functionality implemented in C++, while the GUI was developed with the Qt Framework. The app was tested using GMock and GTest.
+Core functionality implemented in C++, while the GUI was developed with Qt Framework. The app was tested using GMock and GTest.
 
 ## Features
 
 The tic-tac-toe game can be played either between two players or between a player and a computer with adjustable difficulty.
+
+## Contributors
+
+* Daniel Ionita
+* Larisa Marica
